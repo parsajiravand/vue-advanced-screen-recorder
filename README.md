@@ -11,14 +11,18 @@ A powerful and flexible screen recording component for Vue 3 applications with T
 - 🎛️ Configurable recording options
 - 🔧 TypeScript support
 - 🎨 Customizable styling
+- 🔤 Customizable button labels
+- 🎯 Flexible slots for custom UI
 
 ## Installation
 
 ```bash
-npm install vue-screen-recorder
+npm install vue-advanced-screen-recorder
 ```
 
 ## Usage
+
+### Basic Usage
 
 ```vue
 <template>
@@ -28,7 +32,14 @@ npm install vue-screen-recorder
       videoBitsPerSecond: 2500000,
       audioBitsPerSecond: 128000,
       frameRate: 30,
-      audio: true
+      audio: true,
+      buttonLabels: {
+        start: 'Start Recording',
+        stop: 'Stop Recording',
+        pause: 'Pause',
+        resume: 'Resume',
+        download: 'Download Recording'
+      }
     }"
     @start="onStart"
     @stop="onStop"
@@ -39,7 +50,7 @@ npm install vue-screen-recorder
 </template>
 
 <script setup lang="ts">
-import { ScreenRecorder } from 'vue-screen-recorder'
+import { ScreenRecorder } from 'vue-advanced-screen-recorder'
 
 const onStart = () => {
   console.log('Recording started')
@@ -63,6 +74,39 @@ const onError = (error: Error) => {
 </script>
 ```
 
+### Custom UI with Slots
+
+```vue
+<template>
+  <ScreenRecorder>
+    <!-- Custom controls -->
+    <template #controls="{ isRecording, isPaused, startRecording, stopRecording, pauseRecording, resumeRecording }">
+      <div class="my-custom-controls">
+        <button @click="startRecording" :disabled="isRecording">
+          {{ isRecording ? 'Recording...' : 'Start' }}
+        </button>
+        <!-- Add other custom controls -->
+      </div>
+    </template>
+
+    <!-- Custom actions for recorded video -->
+    <template #actions="{ downloadRecording, recordedBlob, recordedUrl }">
+      <div class="my-custom-actions">
+        <button @click="downloadRecording">Save Recording</button>
+        <button @click="customHandleVideo(recordedBlob)">Process Video</button>
+      </div>
+    </template>
+
+    <!-- Custom recording status -->
+    <template #status="{ isRecording, duration, formattedDuration }">
+      <div class="my-custom-status">
+        Recording time: {{ formattedDuration }}
+      </div>
+    </template>
+  </ScreenRecorder>
+</template>
+```
+
 ## Props
 
 ### options
@@ -76,9 +120,42 @@ const onError = (error: Error) => {
   videoBitsPerSecond: 2500000,
   audioBitsPerSecond: 128000,
   frameRate: 30,
-  audio: true
+  audio: true,
+  buttonLabels: {
+    start: 'Start Recording',
+    stop: 'Stop Recording',
+    pause: 'Pause',
+    resume: 'Resume',
+    download: 'Download Recording'
+  }
 }
 ```
+
+## Slots
+
+### controls
+
+Slot for custom control buttons with the following props:
+- `isRecording`: boolean
+- `isPaused`: boolean
+- `startRecording`: () => Promise<void>
+- `stopRecording`: () => void
+- `pauseRecording`: () => void
+- `resumeRecording`: () => void
+
+### actions
+
+Slot for custom actions after recording with the following props:
+- `downloadRecording`: () => void
+- `recordedBlob`: Blob | null
+- `recordedUrl`: string | null
+
+### status
+
+Slot for custom recording status with the following props:
+- `isRecording`: boolean
+- `duration`: number
+- `formattedDuration`: string
 
 ## Events
 

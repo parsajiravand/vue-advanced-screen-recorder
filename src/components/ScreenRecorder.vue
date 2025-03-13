@@ -1,53 +1,83 @@
 <template>
     <div class="screen-recorder">
-      <div class="controls">
-        <button
-          @click="startRecording"
-          :disabled="state.isRecording"
-          class="control-btn start"
-        >
-          Start Recording
-        </button>
-        <button
-          @click="stopRecording"
-          :disabled="!state.isRecording"
-          class="control-btn stop"
-        >
-          Stop Recording
-        </button>
-        <button
-          @click="pauseRecording"
-          :disabled="!state.isRecording || state.isPaused"
-          class="control-btn pause"
-        >
-          Pause
-        </button>
-        <button
-          @click="resumeRecording"
-          :disabled="!state.isRecording || !state.isPaused"
-          class="control-btn resume"
-        >
-          Resume
-        </button>
-      </div>
+      <slot
+        name="controls"
+        v-bind="{
+          isRecording: state.isRecording,
+          isPaused: state.isPaused,
+          startRecording,
+          stopRecording,
+          pauseRecording,
+          resumeRecording
+        }"
+      >
+        <div class="controls">
+          <button
+            @click="startRecording"
+            :disabled="state.isRecording"
+            class="control-btn start"
+          >
+            {{ buttonLabels.start }}
+          </button>
+          <button
+            @click="stopRecording"
+            :disabled="!state.isRecording"
+            class="control-btn stop"
+          >
+            {{ buttonLabels.stop }}
+          </button>
+          <button
+            @click="pauseRecording"
+            :disabled="!state.isRecording || state.isPaused"
+            class="control-btn pause"
+          >
+            {{ buttonLabels.pause }}
+          </button>
+          <button
+            @click="resumeRecording"
+            :disabled="!state.isRecording || !state.isPaused"
+            class="control-btn resume"
+          >
+            {{ buttonLabels.resume }}
+          </button>
+        </div>
+      </slot>
   
       <div v-if="state.recordedUrl" class="preview">
         <video :src="state.recordedUrl" controls></video>
-        <div class="actions">
-          <button @click="downloadRecording" class="action-btn">
-            Download Recording
-          </button>
-        </div>
+        <slot
+          name="actions"
+          v-bind="{
+            downloadRecording,
+            recordedBlob: state.recordedBlob,
+            recordedUrl: state.recordedUrl
+          }"
+        >
+          <div class="actions">
+            <button @click="downloadRecording" class="action-btn">
+              {{ buttonLabels.download }}
+            </button>
+          </div>
+        </slot>
       </div>
   
-      <div class="status" v-if="state.isRecording">
-        Recording: {{ formatDuration(state.duration) }}
-      </div>
+      <slot
+        name="status"
+        v-bind="{
+          isRecording: state.isRecording,
+          duration: state.duration,
+          formattedDuration: formatDuration(state.duration)
+        }"
+      >
+        <div class="status" v-if="state.isRecording">
+          Recording: {{ formatDuration(state.duration) }}
+        </div>
+      </slot>
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref, reactive, onUnmounted } from 'vue'
+  import { reactive, onUnmounted, computed } from 'vue'
   import type { RecordingOptions, RecordingState } from '../types'
   
   const props = withDefaults(defineProps<{
@@ -58,9 +88,24 @@
       videoBitsPerSecond: 2500000,
       audioBitsPerSecond: 128000,
       frameRate: 30,
-      audio: true
+      audio: true,
+      buttonLabels: {
+        start: 'Start Recording',
+        stop: 'Stop Recording',
+        pause: 'Pause',
+        resume: 'Resume',
+        download: 'Download Recording'
+      }
     })
   })
+  
+  const buttonLabels = computed(() => ({
+    start: props.options.buttonLabels?.start ?? 'Start Recording',
+    stop: props.options.buttonLabels?.stop ?? 'Stop Recording',
+    pause: props.options.buttonLabels?.pause ?? 'Pause',
+    resume: props.options.buttonLabels?.resume ?? 'Resume',
+    download: props.options.buttonLabels?.download ?? 'Download Recording'
+  }))
   
   const emit = defineEmits<{
     (e: 'start'): void
@@ -101,7 +146,7 @@
         audioBitsPerSecond: props.options.audioBitsPerSecond
       })
   
-      state.mediaRecorder.ondataavailable = (event) => {
+      state.mediaRecorder.ondataavailable = (event: BlobEvent) => {
         if (event.data.size > 0) {
           state.chunks.push(event.data)
         }
@@ -127,7 +172,7 @@
   const stopRecording = () => {
     if (state.mediaRecorder && state.isRecording) {
       state.mediaRecorder.stop()
-      state.stream?.getTracks().forEach(track => track.stop())
+      state.stream?.getTracks().forEach((track: MediaStreamTrack) => track.stop())
       state.isRecording = false
       state.isPaused = false
     }

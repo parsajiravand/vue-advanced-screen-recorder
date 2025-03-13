@@ -6,6 +6,13 @@ export interface RecordingOptions {
   height?: number;
   frameRate?: number;
   audio?: boolean;
+  buttonLabels?: {
+    start?: string;
+    stop?: string;
+    pause?: string;
+    resume?: string;
+    download?: string;
+  };
 }
 
 export interface RecordingState {

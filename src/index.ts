@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import type { App } from 'vue'
 import ScreenRecorder from './components/ScreenRecorder.vue'
 export * from './types'
 
