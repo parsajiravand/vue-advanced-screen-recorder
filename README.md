@@ -26,7 +26,7 @@ npm install vue-advanced-screen-recorder
 
 ```vue
 <template>
-  <ScreenRecorder
+  <VueAdvancedScreenRecorder
     :options="{
       mimeType: 'video/webm',
       videoBitsPerSecond: 2500000,
@@ -50,7 +50,7 @@ npm install vue-advanced-screen-recorder
 </template>
 
 <script setup lang="ts">
-import { ScreenRecorder } from 'vue-advanced-screen-recorder'
+import VueAdvancedScreenRecorder from 'vue-advanced-screen-recorder'
 
 const onStart = () => {
   console.log('Recording started')
@@ -78,7 +78,7 @@ const onError = (error: Error) => {
 
 ```vue
 <template>
-  <ScreenRecorder>
+  <VueAdvancedScreenRecorder>
     <!-- Custom controls -->
     <template #controls="{ isRecording, isPaused, startRecording, stopRecording, pauseRecording, resumeRecording }">
       <div class="my-custom-controls">
@@ -103,7 +103,7 @@ const onError = (error: Error) => {
         Recording time: {{ formattedDuration }}
       </div>
     </template>
-  </ScreenRecorder>
+  </VueAdvancedScreenRecorder>
 </template>
 ```
 

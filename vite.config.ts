@@ -28,8 +28,8 @@ export default defineConfig({
     ...(isLib ? {
       lib: {
         entry: resolve(__dirname, 'src/components/ScreenRecorder.vue'),
-        name: 'VueScreenRecorder',
-        fileName: 'vue-screen-recorder'
+        name: 'VueAdvancedScreenRecorder',
+        fileName: 'vue-advanced-screen-recorder'
       },
       rollupOptions: {
         external: ['vue'],

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import ScreenRecorder from './components/ScreenRecorder.vue'
+import VueAdvancedScreenRecorder from 'vue-advanced-screen-recorder' 
 
 const eventLogs = ref<string[]>([])
 
@@ -55,7 +55,7 @@ const shareRecording = async (blob: Blob | null) => {
 
     <div class="demo-section">
       <h2>Basic Usage</h2>
-      <ScreenRecorder
+      <VueAdvancedScreenRecorder
         :options="{
           mimeType: 'video/webm',
           videoBitsPerSecond: 2500000,
@@ -80,7 +80,7 @@ const shareRecording = async (blob: Blob | null) => {
 
     <div class="demo-section">
       <h2>Custom UI with Slots</h2>
-      <ScreenRecorder>
+      <VueAdvancedScreenRecorder>
         <template #controls="{ isRecording, isPaused, startRecording, stopRecording, pauseRecording, resumeRecording }">
           <div class="custom-controls">
             <button 
@@ -138,7 +138,7 @@ const shareRecording = async (blob: Blob | null) => {
             🔴 Recording in progress: {{ formattedDuration }}
           </div>
         </template>
-      </ScreenRecorder>
+      </VueAdvancedScreenRecorder>
     </div>
 
     <div class="events-log">
