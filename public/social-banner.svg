@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <rect width="1200" height="630" fill="url(#grad)"/>
+  
+  <!-- Vue.js Logo -->
+  <path d="M600 150L670 270H530L600 150Z" fill="#41B883"/>
+  <path d="M600 150L635 210H565L600 150Z" fill="#35495E"/>
+  
+  <!-- Screen Recording Icon -->
+  <circle cx="600" cy="380" r="100" fill="#41B883" fill-opacity="0.1" stroke="#41B883" stroke-width="4"/>
+  <circle cx="600" cy="380" r="70" fill="#41B883" fill-opacity="0.2"/>
+  <circle cx="600" cy="380" r="15" fill="#FF0000"/>
+  
+  <!-- Text -->
+  <text x="600" y="520" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="bold">Vue Screen Recorder</text>
+  <text x="600" y="570" text-anchor="middle" fill="#41B883" font-family="Arial, sans-serif" font-size="24">Record your screen with ease in Vue.js</text>
+  
+  <!-- Gradient definition -->
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#35495E"/>
+      <stop offset="100%" style="stop-color:#2C3E50"/>
+    </linearGradient>
+  </defs>
+</svg> 

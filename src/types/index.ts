@@ -2,10 +2,12 @@ export interface RecordingOptions {
   mimeType?: string;
   videoBitsPerSecond?: number;
   audioBitsPerSecond?: number;
+  frameRate?: number;
   width?: number;
   height?: number;
-  frameRate?: number;
   audio?: boolean;
+  customDownloadName?: string;
+  customDownloadExtension?: string;
   buttonLabels?: {
     start?: string;
     stop?: string;
